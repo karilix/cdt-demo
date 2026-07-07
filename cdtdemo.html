@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <rect width="100%" height="100%" rx="24" fill="#0f172a" />
+  <text id="label" x="400" y="120" text-anchor="middle"
+        font-family="Segoe UI, Arial, sans-serif"
+        font-size="36"
+        font-weight="600"
+        fill="#f8fafc">Chicago • CDT</text>
+
+  <text id="time" x="400" y="215" text-anchor="middle"
+        font-family="Segoe UI, Arial, sans-serif"
+        font-size="72"
+        font-weight="700"
+        fill="#f8fafc">--:--:--</text>
+
+  <script><![CDATA[
+    const label = document.getElementById("label");
+    const time = document.getElementById("time");
+
+    function updateClock() {
+      const now = new Date();
+
+      const timeFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Chicago",
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      });
+
+      const zoneFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Chicago",
+        timeZoneName: "short"
+      });
+
+      const parts = zoneFormatter.formatToParts(now);
+      let tzName = "CDT";
+      for (const part of parts) {
+        if (part.type === "timeZoneName") {
+          tzName = part.value;
+          break;
+        }
+      }
+
+      time.textContent = timeFormatter.format(now);
+      label.textContent = "Chicago • " + tzName;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  ]]></script>
+</svg>
